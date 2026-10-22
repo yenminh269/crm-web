@@ -3,11 +3,13 @@ export class HomePage {
   readonly searchBar : Locator;
   readonly searchButton : Locator;
   readonly productByCategoryLink : Locator;
+  readonly page : Page;
 
   constructor(page : Page){
     this.searchBar = page.locator('input[type="search"]');
     this.searchButton = page.locator("button[value='Search']");
-    this.productByCategoryLink = page.locator('.product-category');
+    this.productByCategoryLink = page.locator('.product-category a');
+    this.page = page;
   }
 
   async searchProduct(product : string) : Promise<void>{
@@ -18,11 +20,11 @@ export class HomePage {
     console.log("Searching products");
   }
 
-  async viewProduct(categoryChoice : string, page : Page) : Promise<void> {
+  async viewProduct(categoryChoice : string) : Promise<void> {
     const formattedChoice = categoryChoice[0].toUpperCase() + categoryChoice.slice(1);
 
-    const category = page.locator('.product-category a').filter({
-      has: page.locator(`img[alt="${formattedChoice}"]`)
+    const category = this.productByCategoryLink.filter({
+      has: this.page.locator(`img[alt="${formattedChoice}"]`)
     });
   
     await category.click();

@@ -1,38 +1,38 @@
-import { Page, Locator } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 
 export class ProductPage {
-  readonly noProducts : Locator;
-  readonly notFoundMsg: Locator;
-  readonly activeProducts : Locator;
-  readonly pageTitle : Locator;
-  readonly productHeader : Locator;
+  readonly title : Locator;
+  readonly page : Page;
+  readonly description : Locator;
+  readonly quantity : Locator;
+  readonly img : Locator;
+  readonly addToCartButton : Locator;
+  readonly noItemInCart : Locator;
 
-  constructor(page : Page ) {
-    this.noProducts = page.locator('article img');
-    this.notFoundMsg = page.locator('section.not-found');
-    this.activeProducts = page.getByRole('link', { name: 'Leave a Comment' });
-    this.pageTitle = page.getByRole('heading', { name: 'Search Results for:' });
-    this.productHeader = page.locator('ul h2');
+  constructor(page : Page) {
+    this.title = page.locator('h1');
+    this.description = page.locator("div[class='woocommerce-product-details__short-description'] p:nth-child(1)")
+    this.page = page;
+    this.quantity = page.locator('input[name="quantity"]');
+    this.img = page.locator('.zoomImg');
+    this.addToCartButton = page.locator('button[name="add-to-cart"]');
+    this.noItemInCart = page.locator("i.ast-icon-shopping-basket:first-child");
   }
 
-  async getNoProducts() : Promise<number> {
-    const result = await this.noProducts.count();
+  async getProductPrice() : Promise<any> {
+    const productPrice = await this.page.locator("p.price bdi").textContent();
 
-    console.log("Returned number of products: " + result);
-
-    return result;
-  }
-
-  async getProductPrice(name : string, page : Page) : Promise<any> {
-    const product = page.locator('ul.products li div').filter({
-      has: page.locator('h2', {  hasText: name })
-    });
-
-    const productPrice = await product.locator('span bdi').textContent();
     const value = productPrice?.replace('$', '');
 
     console.log("Product price: " + value);
 
     return value;
   }
+
+  async getProductLocator(name : string ) : Promise<Locator> {
+    return this.page.locator('ul.products li div').filter({
+      has: this.page.locator('h2', {  hasText: name })
+    });
+  }
+
 }
