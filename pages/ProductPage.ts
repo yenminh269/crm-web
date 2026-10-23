@@ -8,6 +8,9 @@ export class ProductPage {
   readonly img : Locator;
   readonly addToCartButton : Locator;
   readonly noItemInCart : Locator;
+  readonly viewCartButton : Locator;
+  readonly quantityInput : Locator;
+  readonly cartIcon : Locator;
 
   constructor(page : Page) {
     this.title = page.locator('h1');
@@ -16,7 +19,10 @@ export class ProductPage {
     this.quantity = page.locator('input[name="quantity"]');
     this.img = page.locator('.zoomImg');
     this.addToCartButton = page.locator('button[name="add-to-cart"]');
-    this.noItemInCart = page.locator("i.ast-icon-shopping-basket:first-child");
+    this.noItemInCart = page.locator("i.ast-icon-shopping-basket");
+    this.viewCartButton = page.locator('button.added');
+    this.quantityInput = page.locator('[name="quantity"]');
+    this.cartIcon = page.locator(".ast-site-header-cart-li");
   }
 
   async getProductPrice() : Promise<any> {
@@ -31,8 +37,7 @@ export class ProductPage {
 
   async getProductLocator(name : string ) : Promise<Locator> {
     return this.page.locator('ul.products li div').filter({
-      has: this.page.locator('h2', {  hasText: name })
+      has: this.page.locator('h2', { hasText: name })
     });
   }
-
 }

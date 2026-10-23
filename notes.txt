@@ -1,0 +1,3 @@
+  expected.evaluate(el => el.outerHTML) -> inspect elements
+  .boundingBox() = null -> element is hidden
+    
