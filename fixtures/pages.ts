@@ -3,9 +3,11 @@ import { HomePage } from "../pages/HomePage";
 import { SearchResultPage } from '../pages/SearchResultPage';
 import { ProductCategoryPage } from '../pages/ProductCategoryPage';
 import { ProductPage } from '../pages/ProductPage';
+import { CartPage } from '../pages/CartPage';
 
 type AppFixtures = { homePage : HomePage, searchResultPage : SearchResultPage, 
-  productCategoryPage : ProductCategoryPage, productPage : ProductPage
+  productCategoryPage : ProductCategoryPage, productPage : ProductPage,
+  cartPage : CartPage
 };
 
 export const test = base.extend<AppFixtures>({
@@ -20,6 +22,9 @@ export const test = base.extend<AppFixtures>({
   }, 
   productPage : async({ page }, use) => {
     await use(new ProductPage(page))
+  },
+  cartPage : async({ page }, use) => {
+    await use(new CartPage(page))
   }
 })
 

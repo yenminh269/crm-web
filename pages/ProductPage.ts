@@ -11,6 +11,7 @@ export class ProductPage {
   readonly viewCartButton : Locator;
   readonly quantityInput : Locator;
   readonly cartIcon : Locator;
+  readonly relatedProduct : Locator;
 
   constructor(page : Page) {
     this.title = page.locator('h1');
@@ -20,9 +21,10 @@ export class ProductPage {
     this.img = page.locator('.zoomImg');
     this.addToCartButton = page.locator('button[name="add-to-cart"]');
     this.noItemInCart = page.locator("i.ast-icon-shopping-basket");
-    this.viewCartButton = page.locator('button.added');
+    this.viewCartButton = page.getByTitle('View cart');
     this.quantityInput = page.locator('[name="quantity"]');
     this.cartIcon = page.locator(".ast-site-header-cart-li");
+    this.relatedProduct = page.locator('h2.woocommerce-loop-product__title');
   }
 
   async getProductPrice() : Promise<any> {
