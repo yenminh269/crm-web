@@ -33,7 +33,8 @@ test.describe('View Cart', () => {
 
   test(`Cart subtotal is calculated correctly when add 2 Window-Mounted, 1 Dual Hose`, 
     async({cartPage, productPage}) => {
-    await productPage.quantityInput.fill("2"); //add 2 window
+    //add 2 window
+    await productPage.quantityInput.fill("2"); 
     await addItemToCart(productPage);
 
     //navigate to Dual Hose
@@ -41,19 +42,22 @@ test.describe('View Cart', () => {
         hasText: 'Dual Hose'
       });
 
-      await dualHose.click();
+    await dualHose.click();
 
+    //add 1 Dual hose
     await productPage.quantityInput.fill("1")
     await addItemToCart(productPage);
 
+    //view cart
     await productPage.viewCartButton.click();
 
-    let expected = await cartPage.getItemPrice() * await cartPage.getItemQuantity();
+    let result = await cartPage.getAllItemSubtotal();
 
-    let cartSubtotal = cartPage.cartSubtotal.last();
-    let result = Number(cartSubtotal.locator('bdi').textContent());
+    let num =  cartPage.cartSubtotal.last();
+    let cartSubtotal = await num.locator('bdi').textContent();
+    let expected = Number(cartSubtotal?.replace('$', ''))
     
-    expect(expected).toEqual(result);
+    expect(result).toBe(expected);
   })
 
   //remove product
