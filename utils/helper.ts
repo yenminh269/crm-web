@@ -8,10 +8,4 @@ export async function goto(page : Page, url : string) : Promise<void> {
   console.log("Navigated to the website");
 }
 
-export async function addItemToCart(productPage : ProductPage) : Promise<void> {
-  await productPage.addToCartButton.click();
-  
-  await expect(productPage.viewCartButton).toBeVisible({timeout: 5000});
-  
-  console.log("Added item in cart");
-}
+

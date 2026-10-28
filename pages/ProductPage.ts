@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class ProductPage {
   readonly title : Locator;
@@ -25,6 +25,14 @@ export class ProductPage {
     this.quantityInput = page.locator('[name="quantity"]');
     this.cartIcon = page.locator(".ast-site-header-cart-li");
     this.relatedProduct = page.locator('h2.woocommerce-loop-product__title');
+  }
+
+  async addItemToCart() : Promise<void> {
+    await this.addToCartButton.click();
+    
+    await expect(this.viewCartButton).toBeVisible({timeout: 10000});
+    
+    console.log("Added item in cart");
   }
 
   async getProductPrice() : Promise<any> {
