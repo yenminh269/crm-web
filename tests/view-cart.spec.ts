@@ -1,11 +1,11 @@
 import {test, expect } from "../fixtures/pages"
 import { goto } from "../utils/helper"
+import { productPageLink, productName } from "../utils/constants"
 
 test.describe('View Cart', () => {
   test.beforeEach(async({ page }) => {
-    await goto(page, 
-      `https://websitedemos.net/electronic-store-04/product/btu-115v-window-mounted-air-conditioner-with-remote-control-white/?customize=template`);
-    })
+    await goto(page, productPageLink)
+  })
   
   test('Item subtotal is calculated correctly when add 1 Window-Mounted', 
     async({cartPage, productPage }) => {
@@ -13,9 +13,8 @@ test.describe('View Cart', () => {
 
     await productPage.viewCartButton.click();
 
-    let expected = await cartPage.getItemPrice() * await cartPage.getItemQuantity();
-    
-    expect(await cartPage.getItemSubtotal()).toEqual(expected);
+    expect(await cartPage.getItemSubtotal())
+      .toEqual(await cartPage.getItemPrice() * await cartPage.getItemQuantity());
   })
 
   test('Item subtotal is calculated correctly when add 3 Window-Mounted', 
@@ -59,12 +58,24 @@ test.describe('View Cart', () => {
     expect(result).toBe(expected);
   })
 
-  //remove product
+  test("Message displayed when product removed", async({productPage, page}) => {
+    await productPage.addItemToCart();
+    await productPage.viewCartButton.click();
+
+    let deleteButton = page.locator(`td.product-remove a[aria-label*="${productName}"]`)
+  
+    await deleteButton.click()
+
+    let msg = page.locator('.woocommerce-message').filter({
+      hasText: productName
+    })
+    await expect(msg).toBeVisible()
+  })
 
   test("Checkout button is displayed", async({cartPage, productPage}) => {
     await productPage.addItemToCart();
-
     await productPage.viewCartButton.click();
+    
     await expect(cartPage.checkOutButton).toBeVisible();
   })
 
@@ -74,5 +85,20 @@ test.describe('View Cart', () => {
     await productPage.viewCartButton.click();
 
     await expect(cartPage.couponButton).toBeVisible();
+  })
+
+  test("Coupon error msg is displayed when coupon invalid", async({cartPage, productPage, page}) => {
+    await productPage.addItemToCart();
+
+    await productPage.viewCartButton.click();
+
+    await cartPage.couponButton.click();
+
+    const coupon = "abc";
+
+    await page.locator('#ast-coupon-code').fill(coupon);
+    await page.locator('#ast-apply-coupon').click();
+
+    await expect(page.getByText(`Coupon "${coupon}" cannot be applied because it does not exist.`)).toBeVisible();
   })
 })

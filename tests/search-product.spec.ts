@@ -1,28 +1,27 @@
 import {test, expect } from "../fixtures/pages"
+import { homePageLink } from "../utils/constants";
 import { goto } from "../utils/helper"
 
 test.describe("Search product behavior", () => {
-  test.beforeEach(async({ page }, testInfo) => {
-    let url = testInfo.project.use.baseURL;
-    
-    await goto(page, `${url}`);
+  test.beforeEach(async({ page }) => {
+    await goto(page, homePageLink);
   })
 
-  test('Verify system displays correct product when keyword case-insensitive partial match with product name', 
+  test('System displays correct product when keyword case-insensitive partial match with product name', 
     async({ homePage, searchResultPage }) => {
     await homePage.searchProduct("TV");
 
     expect(await searchResultPage.getNoProducts()).toBe(3);
   })
 
-  test('Verify system displays correct product when keyword case-insensitive exact match with product name', 
+  test('System displays correct product when keyword case-insensitive exact match with product name', 
     async({ homePage, searchResultPage }) => {
     await homePage.searchProduct("X80J 55 Inch TV: 4K Ultra HD LED Smart Google TV with Dolby Vision HDR");
 
     expect(await searchResultPage.getNoProducts()).toBe(1);
   })
 
-  test('Verify system displays messagge keyword do not match with product name', 
+  test('System displays messagge keyword do not match with product name', 
     async({homePage, searchResultPage}) => {
     await homePage.searchProduct("abc");
 
@@ -33,7 +32,7 @@ test.describe("Search product behavior", () => {
     await expect(searchResultPage.notFoundMsg).toContainText(notFoundMsg);
   })
 
-  test('Verify system displays active products with empty keyword', 
+  test('System displays active products with empty keyword', 
     async({homePage, searchResultPage}) => {
     await homePage.searchProduct("");
    

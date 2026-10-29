@@ -1,10 +1,10 @@
 import {test, expect } from "../fixtures/pages"
-import { goto, addItemToCart } from "../utils/helper"
+import { goto } from "../utils/helper"
+import { productPageLink } from "../utils/constants";
 
 test.describe('Cart Modal', () => {
-  test.beforeEach(async({ page }) => {
-      await goto(page, 
-        `https://websitedemos.net/electronic-store-04/product/btu-115v-window-mounted-air-conditioner-with-remote-control-white/?customize=template`);
+  test.beforeEach(async({page}) => {
+    await goto(page, productPageLink)
   })
 
   test('No product in cart displayed on modal when cart empty', async({productPage, page}) => {
@@ -24,7 +24,7 @@ test.describe('Cart Modal', () => {
   })
 
   test('Check out button displayed on modal when cart have item', async({productPage, page}) => {
-    await addItemToCart(productPage);
+    await productPage.addItemToCart();
 
     await productPage.cartIcon.first().click();
 
@@ -34,7 +34,7 @@ test.describe('Cart Modal', () => {
   })
 
   test('View Cart button displayed on modal when cart have item', async({productPage, page}) => {
-    await addItemToCart(productPage);
+    await productPage.addItemToCart();
 
     await productPage.cartIcon.first().click();
 

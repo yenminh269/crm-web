@@ -17,6 +17,7 @@ export class HomePage {
 
     await this.searchButton.click();
 
+    //common method, pass input element
     console.log("Searching products");
   }
 
