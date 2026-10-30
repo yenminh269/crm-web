@@ -1,8 +1,10 @@
 import {test, expect } from "../fixtures/pages"
 import { goto } from "../utils/helper"
-import { category, homePageLink } from "../utils/constants";
+import { homePageLink } from "../utils/constants";
 
 test.describe('View product by category', () => {
+  const category = "air conditioner"; 
+
   test.beforeEach(async({ page }) => {
     await goto(page, homePageLink);
   })
@@ -10,9 +12,9 @@ test.describe('View product by category', () => {
   test("Name corresponding its category", async({ homePage, productCategoryPage }) => {
     await homePage.viewProduct(category);
 
-    let expected = await productCategoryPage.header.textContent();
+    let name = await productCategoryPage.getHeader();
 
-    expect(expected?.toLowerCase()).toBe(category.toLowerCase());
+    expect(name?.toLowerCase()).toBe(category.toLowerCase());
   })
 
   test("Description being displayed", async({ homePage, productCategoryPage }) => {
@@ -24,6 +26,6 @@ test.describe('View product by category', () => {
   test('No.product models displayed corresponding its category', async({ homePage, productCategoryPage }) => {
     await homePage.viewProduct(category);
 
-    expect(await productCategoryPage.noProducts.count()).toBe(4);
+    expect(await productCategoryPage.getNoProduct()).toBe(4);
   })
 })

@@ -16,8 +16,6 @@ export class HomePage {
     await this.searchBar.fill(product);
 
     await this.searchButton.click();
-
-    //common method, pass input element
     console.log("Searching products");
   }
 
@@ -29,7 +27,6 @@ export class HomePage {
     });
   
     await category.click();
-
     console.log("A category is clicked");
   }
 }

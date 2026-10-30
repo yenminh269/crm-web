@@ -13,9 +13,12 @@ export class SearchResultPage {
     this.pageTitle = page.getByRole('heading', { name: 'Search Results for:' });
   }
 
+  async getActiveProductCount() : Promise<number> {
+    return await this.activeProducts.count()
+  }
+
   async getNoProducts() : Promise<number> {
     const result = await this.noProducts.count();
-
     console.log("Returned number of products: " + result);
 
     return result;

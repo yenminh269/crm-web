@@ -13,6 +13,14 @@ export class ProductCategoryPage {
     this.page = page;
   }
 
+  async getNoProduct() : Promise<number> {
+    return await this.noProducts.count()
+  }
+
+  async getHeader() : Promise<any> {
+    return await this.header.textContent()
+  }
+
   async viewProductDetails(name : string) : Promise<any> {
     const product = await this.getProductLocator(name);
 
@@ -21,7 +29,7 @@ export class ProductCategoryPage {
     console.log("Product details displayed");
   }
 
-  async getProductLocator(name : string ) : Promise<Locator> {
+  private async getProductLocator(name : string ) : Promise<Locator> {
     return this.page.locator('ul.products li div').filter({
       has: this.page.locator('h2', {  hasText: name })
     });

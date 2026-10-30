@@ -6,4 +6,8 @@ export async function goto(page : Page, url : string) : Promise<void> {
   console.log("Navigated to the website");
 }
 
+export async function formartPrice(price : any) : Promise<number> {
+  return Number(price?.replace('$', ''));
+}
+
 

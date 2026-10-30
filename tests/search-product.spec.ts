@@ -38,6 +38,6 @@ test.describe("Search product behavior", () => {
    
     await expect(searchResultPage.pageTitle).toBeVisible();
 
-    expect(await searchResultPage.activeProducts.count()).toBeGreaterThan(0);
+    expect(await searchResultPage.getActiveProductCount()).toBeGreaterThan(0);
   })
 })

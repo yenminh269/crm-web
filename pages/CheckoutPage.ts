@@ -1,20 +1,25 @@
 import { Locator, Page } from "@playwright/test";
 
 export class CheckoutPage {
-  readonly placeOrder : Locator;
+  readonly placeOrderButton : Locator;
   readonly billingHeading : Locator;
+  readonly noteInput : Locator;
   readonly page : Page;
 
   constructor(page : Page){
     this.billingHeading = page.locator('#billing_fields_heading')
-    this.placeOrder = page.locator("#place_order");
+    this.placeOrderButton = page.locator("#place_order");
+    this.noteInput = page.locator('textarea.input-text')
     this.page = page;
   }
 
+  async placeOrder() : Promise<void> {
+    await this.placeOrderButton.click();
+  }
+
   async findErrorMsg(msg : string) : Promise<Locator> {
-    const item = this.page.locator('ul.woocommerce-error li').filter({
+    return this.page.locator('ul.woocommerce-error li').filter({
       hasText: msg
     })
-    return item;
   }
 }

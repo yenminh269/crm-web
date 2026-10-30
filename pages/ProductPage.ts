@@ -1,4 +1,5 @@
-import { Locator, Page, expect } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
+import { formartPrice } from "../utils/helper";
 
 export class ProductPage {
   readonly title : Locator;
@@ -12,6 +13,9 @@ export class ProductPage {
   readonly quantityInput : Locator;
   readonly cartIcon : Locator;
   readonly relatedProduct : Locator;
+  readonly continueShoppingButton : Locator
+  readonly viewCartModal : Locator
+  readonly checkOutButton : Locator
 
   constructor(page : Page) {
     this.title = page.locator('h1');
@@ -25,29 +29,34 @@ export class ProductPage {
     this.quantityInput = page.locator('[name="quantity"]');
     this.cartIcon = page.locator(".ast-site-header-cart-li");
     this.relatedProduct = page.locator('h2.woocommerce-loop-product__title');
+    this.continueShoppingButton = page.getByRole('link', { name: 'Continue Shopping' })
+    this.viewCartModal = page.getByRole('link', { name: 'View cart' })
+    this.checkOutButton = page.getByRole('link', { name: 'Checkout' })
   }
 
-  async addItemToCart() : Promise<void> {
+  async getImage() : Promise<boolean> {
+    return await this.img.evaluate(
+        (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+    )
+  }
+
+  async getQuantity() : Promise<string> {
+    return await this.quantity.inputValue()
+  }
+
+  async addItemToCart(quantity : string) : Promise<void> {
+    await this.quantityInput.fill(quantity);
+
     await this.addToCartButton.click();
-    
-   // await expect(this.viewCartButton).toBeVisible({timeout: 10000});
-    
+
+    await this.viewCartButton.click();
     console.log("Added item in cart");
   }
 
   async getProductPrice() : Promise<any> {
     const productPrice = await this.page.locator("p.price bdi").textContent();
+    console.log("Product price: " + productPrice);
 
-    const value = productPrice?.replace('$', '');
-
-    console.log("Product price: " + value);
-
-    return value;
-  }
-
-  async getProductLocator(name : string ) : Promise<Locator> {
-    return this.page.locator('ul.products li div').filter({
-      has: this.page.locator('h2', { hasText: name })
-    });
+    return await formartPrice(productPrice);
   }
 }

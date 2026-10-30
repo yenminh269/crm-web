@@ -7,39 +7,35 @@ test.describe('Cart Modal', () => {
     await goto(page, productPageLink)
   })
 
-  test('No product in cart displayed on modal when cart empty', async({productPage, page}) => {
+  test('No product in cart displayed on modal when cart empty', async({ productPage, page}) => {
     await productPage.cartIcon.first().click();
 
-    let expected = page.locator('p').filter({ hasText: 'No products in the cart.' }).first();
+    let noProductMsg = page.locator('p')
+      .filter({ hasText: 'No products in the cart.' })
+      .first()
 
-    await expect(expected).toBeAttached();
+    await expect(noProductMsg).toBeAttached();
   })
 
-  test('Continue shopping button displayed on modal when cart empty', async({productPage, page}) => {
+  test('Continue shopping button displayed on modal when cart empty', async({ productPage }) => {
     await productPage.cartIcon.first().click();
 
-    let expected = page.getByRole('link', { name: 'Continue Shopping' })
-
-    await expect(expected).toBeVisible();
+    await expect(productPage.continueShoppingButton).toBeVisible();
   })
 
-  test('Check out button displayed on modal when cart have item', async({productPage, page}) => {
-    await productPage.addItemToCart();
+  test('Check out button displayed on modal when cart have item', async({ productPage }) => {
+    await productPage.addItemToCart("1");
 
     await productPage.cartIcon.first().click();
 
-    let expected = page.getByRole('link', { name: 'Checkout' })
-
-    await expect(expected).toBeVisible();
+    await expect(productPage.checkOutButton).toBeVisible();
   })
 
   test('View Cart button displayed on modal when cart have item', async({productPage, page}) => {
-    await productPage.addItemToCart();
-
+    await productPage.quantityInput.fill("1")
+    await productPage.addToCartButton.click();
     await productPage.cartIcon.first().click();
 
-    let expected = page.getByRole('link', { name: 'View cart' })
-
-    await expect(expected).toBeVisible();
+    await expect(productPage.viewCartModal).toBeVisible();
   })
 })
