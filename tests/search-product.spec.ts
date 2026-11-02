@@ -21,7 +21,7 @@ test.describe("Search product behavior", () => {
     expect(await searchResultPage.getNoProducts()).toBe(1);
   })
 
-  test('System displays messagge keyword do not match with product name', 
+  test('System displays messagge when keyword do not match with product name', 
     async({homePage, searchResultPage}) => {
     await homePage.searchProduct("abc");
 

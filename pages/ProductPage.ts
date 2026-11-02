@@ -34,6 +34,10 @@ export class ProductPage {
     this.checkOutButton = page.getByRole('link', { name: 'Checkout' })
   }
 
+  async openProduct(url : string) : Promise<void> {
+    await this.page.goto(url);
+  }
+
   async getImage() : Promise<boolean> {
     return await this.img.evaluate(
         (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
@@ -44,12 +48,14 @@ export class ProductPage {
     return await this.quantity.inputValue()
   }
 
+  async viewCart() : Promise<void> {
+    await this.viewCartButton.click();
+  }
+
   async addItemToCart(quantity : string) : Promise<void> {
     await this.quantityInput.fill(quantity);
 
     await this.addToCartButton.click();
-
-    await this.viewCartButton.click();
     console.log("Added item in cart");
   }
 

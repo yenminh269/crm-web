@@ -6,6 +6,7 @@ test.describe('Check Out', () => {
   test.beforeEach( async({ page, productPage, cartPage, checkOutPage }) => {
     await goto(page, productPageLink)
     await productPage.addItemToCart("1")
+    await productPage.viewCart()
     await cartPage.checkOut()
     await checkOutPage.placeOrder()
   })
@@ -52,7 +53,7 @@ test.describe('Check Out', () => {
     await expect(town).toBeVisible();
   })
 
-  test("Invalid payment method.", async({checkOutPage}) => {
+  test("Invalid payment method when left blank", async({checkOutPage}) => {
     const paymentMethod = await checkOutPage.findErrorMsg("Invalid payment method.")
 
     await expect(paymentMethod).toBeVisible();
@@ -60,6 +61,10 @@ test.describe('Check Out', () => {
 
   test("Note input being displayed", async({checkOutPage}) => {
     await expect(checkOutPage.noteInput).toBeVisible();
+  })
+
+  test("Price Amount is shown", async({checkOutPage}) => {
+    await expect(checkOutPage.priceAmount).not.toHaveText('');
   })
 
   test("Place Order button being displayed", async({checkOutPage}) => {

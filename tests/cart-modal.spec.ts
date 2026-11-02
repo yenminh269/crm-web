@@ -7,7 +7,7 @@ test.describe('Cart Modal', () => {
     await goto(page, productPageLink)
   })
 
-  test('No product in cart displayed on modal when cart empty', async({ productPage, page}) => {
+  test('No product in cart displayed when cart empty', async({ productPage, page}) => {
     await productPage.cartIcon.first().click();
 
     let noProductMsg = page.locator('p')
@@ -23,19 +23,30 @@ test.describe('Cart Modal', () => {
     await expect(productPage.continueShoppingButton).toBeVisible();
   })
 
-  test('Check out button displayed on modal when cart have item', async({ productPage }) => {
-    await productPage.addItemToCart("1");
+  test('Check out button is hidden when cart is empty', async({ productPage }) => {
+    await productPage.cartIcon.first().click();
 
+    await expect(productPage.checkOutButton).not.toBeVisible();
+  })
+
+  test('Check out button displayed when cart have items', async({ productPage }) => {
+    await productPage.addItemToCart("1");
     await productPage.cartIcon.first().click();
 
     await expect(productPage.checkOutButton).toBeVisible();
   })
 
-  test('View Cart button displayed on modal when cart have item', async({productPage, page}) => {
-    await productPage.quantityInput.fill("1")
-    await productPage.addToCartButton.click();
+  test('View Cart button displayed on modal when cart have items', async({productPage, page}) => {
+    await productPage.addItemToCart("1");
     await productPage.cartIcon.first().click();
 
     await expect(productPage.viewCartModal).toBeVisible();
+  })
+
+  test('Continue shopping button is hidden when cart have items', async({ productPage }) => {
+    await productPage.addItemToCart("1");
+    await productPage.cartIcon.first().click();
+
+    await expect(productPage.continueShoppingButton).not.toBeVisible();
   })
 })

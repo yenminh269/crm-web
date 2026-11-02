@@ -12,6 +12,7 @@ export class CartPage {
   readonly msg : Locator
   readonly cartHeader : Locator
   readonly cartItem : Locator
+  readonly buyNowButton : Locator
   readonly page : Page
 
   constructor(page : Page) {
@@ -26,6 +27,7 @@ export class CartPage {
     this.msg = page.locator('.woocommerce-message')
     this.cartHeader = page.locator('h1:has-text("Cart")')
     this.cartItem =  page.locator('tr.cart_item');
+    this.buyNowButton = page.locator('#buyNow')
     this.page = page;
   }
 
