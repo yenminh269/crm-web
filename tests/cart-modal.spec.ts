@@ -1,10 +1,13 @@
 import {test, expect } from "../fixtures/pages"
 import { goto } from "../utils/helper"
 import { productPageLink } from "../utils/constants";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 test.describe('Cart Modal', () => {
   test.beforeEach(async({page}) => {
-    await goto(page, productPageLink)
+    await goto(page, process.env.PRODUCT_URL || productPageLink)
   })
 
   test('No product in cart displayed when cart empty', async({ productPage, page}) => {

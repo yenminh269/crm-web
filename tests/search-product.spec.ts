@@ -1,10 +1,13 @@
 import {test, expect } from "../fixtures/pages"
 import { homePageLink } from "../utils/constants";
 import { goto } from "../utils/helper"
+import  dotenv from 'dotenv';
+
+dotenv.config();
 
 test.describe("Search product behavior", () => {
   test.beforeEach(async({ page }) => {
-    await goto(page, homePageLink);
+    await goto(page, process.env.HOMEPAGE_URL || homePageLink);
   })
 
   test('System displays correct product when keyword case-insensitive partial match with product name', 

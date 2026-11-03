@@ -1,10 +1,13 @@
 import { test, expect } from "../fixtures/pages";
 import { productPageLink } from "../utils/constants";
 import { goto } from "../utils/helper";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 test.describe('Check Out', () => {
   test.beforeEach( async({ page, productPage, cartPage, checkOutPage }) => {
-    await goto(page, productPageLink)
+    await goto(page, process.env.PRODUCT_URL || productPageLink)
     await productPage.addItemToCart("1")
     await productPage.viewCart()
     await cartPage.checkOut()

@@ -1,10 +1,13 @@
 import {test, expect } from "../fixtures/pages"
 import { goto } from "../utils/helper"
 import { homePageLink, productA, productB } from "../utils/constants";
+import  dotenv from 'dotenv';
+
+dotenv.config();
 
 test.describe('Add to Cart functionality', () => {
   test.beforeEach(async({page}) => {
-    await goto(page, homePageLink)
+    await goto(page, process.env.HOMEPAGE_URL || homePageLink)
   })
 
   test(`Validation message displayed when enter an invalid quantity`, async({productPage}) => {

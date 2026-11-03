@@ -1,10 +1,13 @@
 import {test, expect} from "../fixtures/pages"
 import { goto } from "../utils/helper"
 import { productName, productPageLink } from "../utils/constants";
+import  dotenv from 'dotenv';
+
+dotenv.config();
 
 test.describe('Verify Product Details', () => {
   test.beforeEach(async({ page }) => {
-    await goto(page, productPageLink) 
+    await goto(page, process.env.PRODUCT_URL || productPageLink) 
   })
 
   test("Product name corresponding selected product", async({productPage}) => {

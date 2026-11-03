@@ -1,10 +1,13 @@
 import {test, expect } from "../fixtures/pages"
 import { goto } from "../utils/helper"
 import { productPageLink, productName, productB } from "../utils/constants"
+import  dotenv from 'dotenv';
+
+dotenv.config();
 
 test.describe('View Cart', () => {
   test.beforeEach(async({ page }) => {
-    await goto(page, productPageLink)
+    await goto(page, process.env.PRODUCT_URL || productPageLink)
   })
   
   test('Item subtotal is calculated correctly when 1 unit of a product is added', 
