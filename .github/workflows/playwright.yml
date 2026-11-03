@@ -31,6 +31,6 @@ jobs:
       with:
         name: screenshots
         path: test-results/**/*.png
-    - env:
+    env:
       HOMEPAGE_URL: ${{ secrets.HOMEPAGE_URL }}
       PRODUCT_URL: ${{ secrets.PRODUCT_URL }}
