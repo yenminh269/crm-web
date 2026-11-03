@@ -39,7 +39,7 @@ test.describe('Cart Modal', () => {
     await expect(productPage.checkOutButton).toBeVisible();
   })
 
-  test('View Cart button displayed on modal when cart have items', async({productPage, page}) => {
+  test('View Cart button displayed on modal when cart have items', async({productPage}) => {
     await productPage.addItemToCart("1");
     await productPage.cartIcon.first().click();
 
