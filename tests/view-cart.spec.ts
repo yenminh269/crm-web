@@ -10,7 +10,7 @@ test.describe('View Cart', () => {
   test('Item subtotal is calculated correctly when 1 unit of a product is added', 
     async({cartPage, productPage }) => {
     await productPage.addItemToCart("1")
-   // await productPage.viewCart()
+    await productPage.viewCart()
    
     expect(await cartPage.getItemSubtotal()).toBe(179.00);
   })
