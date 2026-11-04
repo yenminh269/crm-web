@@ -7,7 +7,14 @@ on:
   schedule:
     - cron: '0 0 * * *' # every day at midnight
 jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Fake deploy step
+      run: echo "This is a placeholder for the deploy step."
   test:
+    needs: deploy
+    
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
@@ -22,10 +29,10 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    # - name: Run Playwright tests
-    #   run: npx playwright test
-    - name: Run on different browsers
-      run: npx playwright test --project=${{ matrix.browser }}
+    - name: Run Playwright tests
+      run: npx playwright test
+    # - name: Run on different browsers
+    #   run: npx playwright test --project=${{ matrix.browser }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
